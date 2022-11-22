@@ -3,57 +3,54 @@ import PySimpleGUI as sg
 from vernamcipher.cryptographic import Cryptographic
 
 
-
-
+# шифр Виженера
 def Vigenere():
     global path, key, reverse
     file = open(path, 'r')
     plain = ""
     for i in file.readlines():
-        plain+=i
+        plain += i
     file.close()
     file = open(path, 'w')
     length = len(plain)
 
     longkey = ''
     for i in range(length):
-        longkey += key[i%len(key)]
+        longkey += key[i % len(key)]
     for i in range(length):
-        file.write(chr((ord(plain[i]) + (ord(longkey[i]) if not reverse else -ord(longkey[i]))) % 256))
+        file.write(chr(
+            (ord(plain[i]) + (ord(longkey[i]) if not reverse else -ord(longkey[i]))) % 256))
     file.close()
 
-    
 
-
-
+# шифр Вернама
 def Vernam():
     global path, key, reverse
     result = ''
     file = open(path, 'r')
     plain = ''
     for i in file.readlines():
-        plain+=i
+        plain += i
     length = len(plain)
     longkey = ''
     for i in range(length):
-        longkey += key[i%len(key)]
+        longkey += key[i % len(key)]
     encrypted = Cryptographic.exclusive_operations(plain, longkey)
     file.close()
     file = open(path, 'w')
     file.write(encrypted)
     file.close()
 
-    
 
-
-
+# шифр Цезаря
 def Ceasar():
     global path, key, reverse
     file = open(path, 'r')
     new_file = open("ciph.txt", 'w')
     for i in file.readlines():
         for j in i:
-            new_file.write(chr(ord(j) + (int(key) if not reverse else (-int(key)))))
+            new_file.write(
+                chr(ord(j) + (int(key) if not reverse else (-int(key)))))
     new_file.close()
     file.close()
     new_file = open("ciph.txt", 'r')
@@ -67,7 +64,7 @@ def Ceasar():
     os.remove("ciph.txt")
 
 
-
+# ввод ключа и пути к файлу, который нужно зашифровать
 def Cypher_Window():
     global choise, key, path
     sg.theme('DarkTeal11')
@@ -87,12 +84,13 @@ def Cypher_Window():
             break
 
     window.close()
-    return 0    
-
+    return 0
 
 
 def Hack_Window():
-    return 0
+    exit(0)
+
+# прощальное окно
 
 
 def Output_Window():
@@ -113,7 +111,7 @@ def Output_Window():
     return 0
 
 
-
+# стартовое окно выбоа
 def firstwindow():
     global choise, reverse
     sg.theme('DarkTeal11')
@@ -135,17 +133,6 @@ def firstwindow():
             reverse = values[0]
             break
     window.close()
-
-    
-
-
-
-
-
-
-
-
-
 
 
 reverse = False
